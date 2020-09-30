@@ -117,19 +117,27 @@ done4a:
 task5:
 		ble	$s2,$zero,done5	# test if done
 		lb	$t0,($s0)		# get the next byte
-		sb	$t0,($s1)		# put the byte
+		sb	$t0,($s1)		# put the byte 
 		add	$s0,$s0,1		# increment input pointer
 		add	$s1,$s1,1		# increment output point
 		sub	$s2,$s2,1		# decrement index variable
-		j	task5			# continue
+		j	task5			# continue 
 done5:
 #
 # Task 5:  copy the Task 5 code and paste here.  Modify the code to copy
 # the data in words rather than bytes.
-
+		la	$s0,Input2		# load pointer to array Input1
+		la	$s1,Copy		# load pointer to array Copy
+		lw	$s2,InLenW		# get length of array Input1 in bytes
 task5b:
-
-done5b:
+		ble	$s2,$zero,done5b	# test if done
+		lw	$t0,($s0)		# get the next byte
+		sw	$t0,($s1)		# put the byte
+		add	$s0,$s0,4		# increment input pointer
+		add	$s1,$s1,4		# increment output point
+		sub	$s2,$s2,1 		# decrement index variable
+		j	task5b			# continue 
+done5b: 
 #
 # Code for Task 6 -- 
 # Print the integer average of the contents of array Input2 (bytes) 
@@ -138,10 +146,13 @@ done5b:
 		syscall 
 		la	$s0,Input2 		# load pointer to array Input1 
 		lw	$s1,InLenB		# get length of array Input1 in bytes 
+		lw 	$s4,InLenB 
 		sub $s2,$s1,1 
+		li 	$s3,0 
 task6:
 		ble $s1, $zero, done6 
 		lb	$a0,($s0)		# load next byte into I/O register
+		add $s3,$s3,$a0 
 		li	$v0,1			# specify print integer
 		syscall				# print the integer
 		la	$a0,space		# address of string to print
@@ -151,12 +162,17 @@ task6:
 		sub	$s1,$s1,1		# decrement index variable
 		j	task6			# do it again
 done6: 
+		la $a0,NewLine 
+		li $v0,4 
+		syscall 
+		div $s3,$s3,$s4  
+		or $a0,$s3,0 
 		li	$v0,1			# specify print integer
 		syscall	
 #
 # Code for Task 7 --  
 # Print the first 25 integers that are divisible by 7 (with spaces)
-
+		
 task7:
 
 done7:
