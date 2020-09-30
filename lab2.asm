@@ -172,10 +172,25 @@ done6:
 #
 # Code for Task 7 --  
 # Print the first 25 integers that are divisible by 7 (with spaces)
-		
+		lw $s0,0 
+		lw $s1,7 
+		lw $s2,25 
 task7:
-
-done7:
+		ble $s2,$zero,done7 
+		div $s3,$s0,$s1  
+		sub $s2,$s2,1 
+		j 	checkif 
+checkif: 
+		beq $s3,$zero,next 
+next: 
+		la $a0,space  
+		li $v0,4 
+		syscall 
+		or $a0,$s3,0 
+		li $v0,4 
+		syscall 
+		j task7 
+done7: 
 #
 # The following code initializes Input3 for Task9
 		la	$s0,Input3		# load pointer to Input3
