@@ -68,6 +68,9 @@ main:
 		la $a0,space 
 		li $v0,4 
 		syscall 
+		la $a0,NewLine 
+		li $v0,4 
+		syscall 
 #
 # Print the integer values of each byte in the array Input1
 # Task 4a: modify the code so that it prints spaces between the integers 
@@ -175,7 +178,7 @@ done6:
 		la $a0,NewLine 
 		li $v0,4 
 		syscall
-		
+
 		li $s0,0 		# number
 		li $s2, 25 		# count
 
@@ -194,17 +197,28 @@ done7:
 		la $a0,NewLine 
 		li $v0,4 
 		syscall 
+		la $a0,NewLine 
+		li $v0,4 
+		syscall 
 #
 # The following code initializes Input3 for Task9
 		la	$s0,Input3		# load pointer to Input3
 		li	$s1,100			# load size of array in bytes
 		li	$t0,3			# start with 3
+
 init9a:
 		ble	$s1,$zero,done9a	# test if done
+ 
 		sb	$t0,($s0)		# write out another byte
 		add	$s0,$s0,1		# point to next byte
 		sub	$s1,$s1,1		# decrement index variable
 		add	$t0,$t0,1		# increase value by 1
+		or $a0, $t0, 0
+		li $v0,1
+		syscall 
+		la $a0, space
+		li $v0,4 
+		syscall
 		j 	init9a			# continue
 done9a:
 #
