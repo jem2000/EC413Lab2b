@@ -8,7 +8,7 @@
 #  DATA
 ############################################################################
         .data           # Data segment
-Hello:  .asciiz " \n Steven Tong! \n"  # declare a zero terminated string 
+Hello:  .asciiz " \n Steven Tong & Justin Melville! \n"  # declare a zero terminated string 
 NewLine: .asciiz "\n" 
 AnInt:	.word	17      # a word initialized to 17
 space:	.asciiz	" "	    # declare a zero terminate string
@@ -172,25 +172,28 @@ done6:
 #
 # Code for Task 7 --  
 # Print the first 25 integers that are divisible by 7 (with spaces)
-		lw $s0,0 
-		lw $s1,7 
-		lw $s2,25 
+		la $a0,NewLine 
+		li $v0,4 
+		syscall
+		
+		li $s0,0 		# number
+		li $s2, 25 		# count
+
 task7:
-		ble $s2,$zero,done7 
-		div $s3,$s0,$s1  
-		sub $s2,$s2,1 
-		j 	checkif 
-checkif: 
-		beq $s3,$zero,next 
-next: 
-		la $a0,space  
+		beq $s2, $zero, done7
+		or $a0, $s0, 0
+		li	$v0,1			# specify print integer
+		syscall	
+		addi $s0, $s0, 7 
+		la $a0, space
 		li $v0,4 
 		syscall 
-		or $a0,$s3,0 
-		li $v0,4 
-		syscall 
-		j task7 
+		sub $s2, $s2, 1
+		j task7
 done7: 
+		la $a0,NewLine 
+		li $v0,4 
+		syscall 
 #
 # The following code initializes Input3 for Task9
 		la	$s0,Input3		# load pointer to Input3
