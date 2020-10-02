@@ -221,10 +221,41 @@ init9a:
 		syscall
 		j 	init9a			# continue
 done9a:
+		la $a0,NewLine 
+		li $v0,4 
+		syscall 
+		la $a0,NewLine 
+		li $v0,4 
+		syscall 
 #
 # Code for Task 9 --
 # Transpose the 10x10 byte array in Input3 into Transpose
+		la	$s0,Input3		# load pointer to Input3
+		li	$s1,10			# load size of array in bytes
+		li	$s2,10			# load size of array in bytes
+		li	$s3,100			# load size of array in bytes
+		li	$t0,3			# start with 3
+outerLoop:
+		ble	$s1,$zero, outerEnd	# test if done
+innerLoop:
+		ble $s2, $zero, innerEnd
+		add	$t0,$t0,10		# increase value by 1
+		or $a0, $t0, 0
+		li $v0,1
+		syscall 
+		la $a0, space
+		li $v0,4 
+		syscall
 
+
+		sub	$s2,$s2,1		# decrement index variable
+		j innerLoop
+innerEnd:
+		add	$t0,$t0,10
+		li	$s2,10
+		sub	$s1,$s1,1		# decrement index variable
+		j outerLoop
+outerEnd:
 
 # ALL DONE!
 Exit:
