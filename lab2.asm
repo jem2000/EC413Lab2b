@@ -204,7 +204,7 @@ done7:
 # The following code initializes Input3 for Task9
 		la	$s0,Input3		# load pointer to Input3
 		li	$s1,100			# load size of array in bytes
-		li	$t0,3			# start with 3
+		li	$t0,1			# start with 3
 
 init9a:
 		ble	$s1,$zero,done9a	# test if done
@@ -234,18 +234,23 @@ done9a:
 		li	$s1,10			# load size of array in bytes
 		li	$s2,10			# load size of array in bytes
 		li	$s3,100			# load size of array in bytes
-		li	$t0,3			# start with 3
+
 outerLoop:
 		ble	$s1,$zero, outerEnd	# test if done
 innerLoop:
 		ble $s2, $zero, innerEnd
-		add	$t0,$t0,10		# increase value by 1
-		or $a0, $t0, 0
-		li $v0,1
-		syscall 
+
 		la $a0, space
 		li $v0,4 
 		syscall
+
+		add $s0, $s0, 1
+
+	la $t0, ($s0)
+	addi $t0, $t0, 0
+	lb $a0, 0($t0)  
+	addi $v0, $0, 1 
+	syscall
 
 
 		sub	$s2,$s2,1		# decrement index variable
