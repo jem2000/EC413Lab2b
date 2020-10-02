@@ -204,18 +204,18 @@ done7:
 # The following code initializes Input3 for Task9
 		la	$s0,Input3		# load pointer to Input3
 		li	$s1,100			# load size of array in bytes
-		li	$t0,1			# start with 3
+		li	$t0,3			# start with 3
 
 init9a:
 		ble	$s1,$zero,done9a	# test if done
- 
+		or $a0, $t0, 0
+		li $v0,1
+		syscall 
 		sb	$t0,($s0)		# write out another byte
 		add	$s0,$s0,1		# point to next byte
 		sub	$s1,$s1,1		# decrement index variable
 		add	$t0,$t0,1		# increase value by 1
-		or $a0, $t0, 0
-		li $v0,1
-		syscall 
+
 		la $a0, space
 		li $v0,4 
 		syscall
@@ -233,16 +233,16 @@ done9a:
 		la	$s0,Input3		# load pointer to Input3
 		li	$s1,10			# load size of array in bytes
 		li	$s2,10			# load size of array in bytes
-		li	$s3,100			# load size of array in bytes
+		la	$s3,Transpose	# load size of array in bytes
 
 outerLoop:
 		ble	$s1,$zero, outerEnd	# test if done
 innerLoop:
-		beq $s2, $zero, innerEnd
+		ble $s2, $zero, innerEnd
 
+	la $s3, ($s0)
 
-
-	la $t0, ($s0)
+	la $t0, ($s3)
 	addi $t0, $t0, 0
 	lb $a0, 0($t0)  
 	addi $v0, $0, 1 
@@ -253,11 +253,13 @@ innerLoop:
 		syscall
 
 		add $s0, $s0, 10
+		add $s3, $s3, 10
 
 		sub	$s2,$s2,1		# decrement index variable
 		j innerLoop
 innerEnd:
 		sub $s0, $s0, 99
+		sub $s3, $s3, 99
 		add	$t0,$t0,10
 		li	$s2,10
 		sub	$s1,$s1,1		# decrement index variable
