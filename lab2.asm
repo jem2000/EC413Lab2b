@@ -238,13 +238,9 @@ done9a:
 outerLoop:
 		ble	$s1,$zero, outerEnd	# test if done
 innerLoop:
-		ble $s2, $zero, innerEnd
+		beq $s2, $zero, innerEnd
 
-		la $a0, space
-		li $v0,4 
-		syscall
 
-		add $s0, $s0, 1
 
 	la $t0, ($s0)
 	addi $t0, $t0, 0
@@ -252,13 +248,24 @@ innerLoop:
 	addi $v0, $0, 1 
 	syscall
 
+		la $a0, space
+		li $v0,4 
+		syscall
+
+		add $s0, $s0, 10
 
 		sub	$s2,$s2,1		# decrement index variable
 		j innerLoop
 innerEnd:
+		sub $s0, $s0, 99
 		add	$t0,$t0,10
 		li	$s2,10
 		sub	$s1,$s1,1		# decrement index variable
+
+		la $a0,NewLine 
+		li $v0,4 
+		syscall 
+
 		j outerLoop
 outerEnd:
 
